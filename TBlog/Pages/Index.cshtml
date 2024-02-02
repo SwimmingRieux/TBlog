@@ -1,0 +1,93 @@
+﻿@page
+@model IndexModel
+@{
+    if (Model.order_by == 0) ViewData["Title"] = "جدیدترین ها";
+    else if (Model.order_by == 1) ViewData["Title"] = "پربازدیدترین ها";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+    <section class="page page-profile page-">
+        <section class="page-inner">
+
+
+            <section class="page-content">
+                <header class="profile-header pt-16 pb-16">
+                    <div class="rnvs-container rnvs-container-sm">
+                        
+                        @if (Model.order_by == 0)
+                        {
+                        <h1 style="color: darkred;">جدید ترین های راست‌نویس</h1>
+                        }
+                        else if (Model.order_by == 1)
+                        {
+                        <h1 style="color: darkred;">پربازدید ترین های راست‌نویس</h1>
+                        }
+                    </div>
+                </header>
+
+                <nav class="com-tabs mb-50 text-center">
+                    <div class="rnvs-container rnvs-container-sm">
+                        @if (Model.order_by == 0)
+                        {
+                            <a href="/" class="com-tabs--item ml-24 is-active">جدیدترین‌ها</a>
+                            <a href="?order_by=views" class="com-tabs--item " rel="nofollow">پربازدیدترین‌ها</a>
+                        }
+                        else if (Model.order_by == 1)
+                        {
+                            <a href="/" class="com-tabs--item ml-24">جدیدترین‌ها</a>
+                            <a href="?order_by=views" class="com-tabs--item is-active" rel="nofollow">پربازدیدترین‌ها</a>
+                        }
+                    </div>
+                </nav>
+
+                <div class="rnvs-container rnvs-container-sm mt-36">
+                    @foreach (var itm in Model.Data)
+                    {
+                        <div class="feedContainer-stream border-bottom">
+
+
+                            <div class="feedStream-container feedlistStream js-infinite-container">
+                                <div class="jscroll-inner">
+
+                                    <article class="streamItem">
+                                        <div class="streamItem-post">
+                                            <div class="streamItem-coverPos"><a href="/article?id=@itm.PId" title="@itm.PTitle" class="streamItem--cover"><img class="streamItem--img" src="~/Images/@itm.PPicture" alt="@itm.PTitle"></a></div>
+                                            <div class="streamItem-postContent">
+                                                <div class="streamItem-caption">
+                                                    <a href="/article?id=@itm.PId">
+                                                        <h3 class="streamItem--title">@itm.PTitle</h3>
+                                                        <p class="streamItem--summary">@itm.PSubtitle</p>
+                                                    </a>
+                                                </div>
+                                                <footer class="streamItem-footer">
+                                                    <div class="postStreamItem-meta" style="padding-bottom:5px;">
+                                                        @{
+                                                            Data.Site site = Model.SitesData.SingleOrDefault(s => s.SId == itm.PSId);
+                                                            Data.User user = Model.UsersData.SingleOrDefault(u => u.UId == itm.PUId);
+                                                            Data.Category cat = Model.CatsData.SingleOrDefault(c => c.CId == itm.PCId);
+                                                        }
+                                                        <a class="postStreamItem-meta--avatar" href="/site?id=@site.SId" title="@site.SPersianName"><img src="~/Images/@site.SPic" alt="@site.SPersianName"></a>
+                                                        <div class="postStreamItem-meta-info">
+                                                            <div class="postStreamItem-meta-publisher"><a class="postStreamItem-meta--author" href="/site?id=@site.SId">@site.SPersianName</a> توسط <a class="postStreamItem-meta--publication" href="/user?id=@user.UId">@user.UName</a></div>
+                                                            <div class="postStreamItem-meta-postInfo"><span class="postStreamItem-meta-postInfo--item">📅 ۱ هفته پیش | </span><span class="postStreamItem-meta-postInfo--item">🕓 خواندن ۱۴ دقیقه</span><div class="postStreamItem-meta-postInfo--item"><br> <a class="rounded" style="background-color:peachpuff; padding:4px;" href="/category?id=@cat.CId">@cat.CTitle</a></div></div>
+                                                        </div>
+                                                    </div>
+
+                                                </footer>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+
+    </section>

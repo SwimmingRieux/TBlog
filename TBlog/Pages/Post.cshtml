@@ -1,0 +1,255 @@
+﻿@page "/article"
+@model TBlog.PostModel
+@{
+    ViewData["Title"] = "Post";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@{
+    int id = Model.artcleId;
+    var post = Model.Data.SingleOrDefault(p => p.PId == id);
+    var site = Model.SiteData.SingleOrDefault(s => s.SId == post.PSId);
+    var user = Model.UserData.SingleOrDefault(u => u.UId == post.PUId);
+    var catg = Model.CatsData.SingleOrDefault(c => c.CId == post.PCId);
+    var catLst = Model.Data.Where(p => p.PCId == post.PCId).ToList();
+    catLst.Remove(post);
+    catLst.OrderByDescending(c => c.PViews).ToList();
+    List<Data.Post> p = Enumerable.Repeat<Data.Post>(null, 7).ToList();
+    List<Data.Site> s = Enumerable.Repeat<Data.Site>(null, 7).ToList();
+    List<Data.Category> c = Enumerable.Repeat<Data.Category>(null, 7).ToList();
+    List<Data.User> u = Enumerable.Repeat<Data.User>(null, 7).ToList();
+    if (catLst.Count > 0)
+    {
+        p[1] = catLst[0];
+        catLst.Remove(p[1]);
+        s[1] = Model.SiteData.SingleOrDefault(s => s.SId == p[1].PSId);
+        u[1] = Model.UserData.SingleOrDefault(u => u.UId == p[1].PUId);
+        c[1] = Model.CatsData.SingleOrDefault(c => c.CId == p[1].PCId);
+    }
+    catLst.OrderByDescending(c => c.PId).ToList();
+    if(catLst.Count > 0)
+    {
+        p[2] = catLst[0];
+        s[2] = Model.SiteData.SingleOrDefault(s => s.SId == p[2].PSId);
+        u[2] = Model.UserData.SingleOrDefault(u => u.UId == p[2].PUId);
+        c[2] = Model.CatsData.SingleOrDefault(c => c.CId == p[2].PCId);
+    }
+    catLst = Model.Data.Where(c => c.PUId == post.PUId).ToList();
+    catLst.Remove(post);
+    catLst.OrderByDescending(p => p.PViews).ToList();
+    if (catLst.Count > 0)
+    {
+        p[3] = catLst[0];
+        catLst.Remove(p[3]);
+        s[3] = Model.SiteData.SingleOrDefault(s => s.SId == p[3].PSId);
+        u[3] = Model.UserData.SingleOrDefault(u => u.UId == p[3].PUId);
+        c[3] = Model.CatsData.SingleOrDefault(c => c.CId == p[3].PCId);
+    }
+    catLst.OrderByDescending(c => c.PId).ToList();
+    if(catLst.Count > 0)
+    {
+        p[4] = catLst[0];
+        s[4] = Model.SiteData.SingleOrDefault(s => s.SId == p[4].PSId);
+        u[4] = Model.UserData.SingleOrDefault(u => u.UId == p[4].PUId);
+        c[4] = Model.CatsData.SingleOrDefault(c => c.CId == p[4].PCId);
+    }
+    catLst = Model.Data.Where(c => c.PSId == post.PSId).ToList();
+    catLst.Remove(post);
+    catLst.OrderByDescending(p => p.PViews).ToList();
+    if (catLst.Count > 0)
+    {
+        p[5] = catLst[0];
+        catLst.Remove(p[5]);
+        s[5] = Model.SiteData.SingleOrDefault(s => s.SId == p[5].PSId);
+        u[5] = Model.UserData.SingleOrDefault(u => u.UId == p[5].PUId);
+        c[5] = Model.CatsData.SingleOrDefault(c => c.CId == p[5].PCId);
+    }
+    catLst.OrderByDescending(c => c.PId).ToList();
+    if(catLst.Count > 0)
+    {
+        p[6] = catLst[0];
+        s[6] = Model.SiteData.SingleOrDefault(s => s.SId == p[6].PSId);
+        u[6] = Model.UserData.SingleOrDefault(u => u.UId == p[6].PUId);
+        c[6] = Model.CatsData.SingleOrDefault(c => c.CId == p[6].PCId);
+    }
+
+}
+
+    
+                <section class="page page-single page-" style="margin-top:90px; margin-bottom:150px;">
+                    <section class="page-inner">
+
+
+                        <section class="page-content">
+                            <article class="single-container js-button-action ">
+
+
+
+
+                                <header class="author module">
+                                    <div class="module--avatar">
+                                        <a href="/site?id=@site.SId">
+                                            <img src="~/Images/@site.SPic" alt="@site.SPersianName">
+                                        </a>
+
+                                    </div>
+                                    <div class="module-info">
+                                        <div class="module-header">
+                                            <a class="module--name" href="/site?id=@site.SId">
+                                                @site.SPersianName
+                                            </a>
+                                            <span class="module--name">توسط</span>
+
+                                            <a class="module--name" href="/user?id=@user.UId">@user.UName</a>
+
+
+
+                                        </div>
+                                        <p class="module--bio ">@post.PSubtitle</p>
+                                        <div class="module-footer">
+                                            <span>۴ هفته پیش</span>
+                                            /
+                                            <span>خواندن ۱۵ دقیقه</span>
+                                            /
+                                            <a href="/category?id=@catg.CId">@catg.CTitle</a>
+                                        </div>
+                                    </div>
+                                </header>
+
+
+
+                                <div class="post-content article-content" style="padding-bottom:15px;">
+
+                                    <img style="padding-bottom:30px;" src="~/Images/@post.PPicture" />
+
+                                    <h1>@post.PTitle</h1>
+
+                                    <div class="border-right rounded" style="padding-right:5px; margin-bottom:15px; font-weight:700; font-size:14px;">
+                                        لینک مقاله‌ی اصلی : 
+                                        <a href="https://@post.PLink" class="color-red">@site.SPersianName</a>
+                                    </div>
+
+                                    <div class="post-body renderEditorData">
+                                        @post.PText
+                                    </div>
+
+                                </div>
+
+                                <header class="author module">
+                                    <div class="module--avatar">
+                                        <a href="/site?id=@site.SId">
+                                            <img src="~/Images/@site.SPic" alt="@site.SPersianName">
+                                        </a>
+
+                                    </div>
+                                    <div class="module-info">
+                                        <div class="module-header">
+                                            <a class="module--name" href="/site?id=@site.SId">
+                                                @site.SPersianName
+                                            </a>
+
+                                            <span class="module--name">توسط</span>
+
+                                            <a class="module--name" href="/user?id=@user.UId">@user.UName</a>
+
+
+
+                                        </div>
+                                        <p class="module--bio ">@post.PSubtitle</p>
+                                        <div class="module-footer">
+                                            <span>۴ هفته پیش</span>
+                                            /
+                                            <span>خواندن ۱۵ دقیقه</span>
+                                            /
+                                            <a href="/category?id=@catg.CId">@catg.CTitle</a>
+                                        </div>
+                                    </div>
+                                </header>
+
+                                <footer class="single-post-footer js-postfooter">
+                                    <div class="post-tags">
+                                        <ul>
+                                            @foreach (var itm in Model.TagPostsData)
+                                            {
+                                                int tid = itm.TId;
+                                                var tmpTag = Model.TagsData.SingleOrDefault(t => t.TId == tid);
+                                                <li><a class="rounded" style="background-color:peachpuff; padding:4px;" href="/tag?id=@tmpTag.TId">@tmpTag.TTitle</a></li>
+                                            }
+
+                                        </ul>
+                                    </div>
+                                    @for (int i = 1; i <= 6; i++)
+                                    {
+                                        if (p[i] != null)
+                                        {
+                                            if (i % 2 == 1)
+                                            {
+                                                <div class="border-top"></div>
+                                            }
+                                            <div class="feedContainer-stream">
+
+
+                                                <div class="feedStream-container feedlistStream js-infinite-container">
+                                                    <div class="jscroll-inner">
+
+
+
+                                                        <article class="streamItem">
+                                                            <div class="streamItem-post">
+                                                                <div class="streamItem-coverPos"><a href="#" title=" @p[i].PTitle" class="streamItem--cover"><img class="streamItem--img" src="~/Images/@p[i].PPicture" alt="@p[i].PTitle"></a></div>
+                                                                <div class="streamItem-postContent">
+                                                                    <div class="streamItem-caption">
+                                                                        <a href="/article?id=@p[i].PId">
+                                                                            <h3 class="streamItem--title"> @p[i].PTitle</h3>
+                                                                            <p class="streamItem--summary">@p[i].PSubtitle</p>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="streamItem-footer">
+                                                                        <div class="postStreamItem-meta" style="padding-bottom:5px;">
+                                                                            <a class="postStreamItem-meta--avatar" href="/site?id=@s[i].SId" title="@s[i].SPersianName"><img src="~/Images/@s[i].SPic" alt="@s[i].SPersianName"></a>
+                                                                            <div class="postStreamItem-meta-info">
+                                                                                <div class="postStreamItem-meta-publisher"><a class="postStreamItem-meta--author" href="/site?id=@s[i].SId">@s[i].SPersianName</a> توسط <a class="postStreamItem-meta--publication" href="/user?id=@u[i].UId">@u[i].UName</a></div>
+                                                                                <div class="postStreamItem-meta-postInfo"><span class="postStreamItem-meta-postInfo--item">📅 ۱ هفته پیش | </span><span class="postStreamItem-meta-postInfo--item">🕓 خواندن ۱۴ دقیقه</span><div class="postStreamItem-meta-postInfo--item"><br> <a class="rounded" style="background-color:peachpuff; padding:4px;" href="/category?id=@c[i].CId">@c[i].CTitle</a></div></div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </article>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        if (i == 2)
+                                        {
+                                            <div class="module-header" style="padding-bottom:15px;">
+                                                <a href="/category?id=@catg.CId" class="module--name">◀ مقالات بیشتر از دسته بندی @catg.CTitle</a>
+                                            </div>
+                                        }
+                                        else if (i == 4)
+                                        {
+                                            <div class="module-header" style="padding-bottom:15px;">
+                                                <a href="/user?id=@user.UId" class="module--name">◀ مقالات بیشتر از @user.UName</a>
+                                            </div>
+                                        }
+                                        else if (i == 6)
+                                        {
+                                            <div class="module-header" style="padding-bottom:15px;">
+                                                <a href="/site?id=@site.SId" class="module--name">◀ مقالات بیشتر از @site.SPersianName</a>
+                                            </div>
+                                        }
+                                    }
+
+                                </footer>
+                            </article>
+
+                        </section>
+
+
+                    </section>
+
+
+
+                </section>
